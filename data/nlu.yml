@@ -1,0 +1,125 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+    - i am unhappy
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+ 
+- intent: check_price
+  examples: |
+    - what is the current price of [btc](symbol)?
+    - what is the price of [btc](symbol)?
+    - show me the current price of [btc](symbol)?
+    - how much is one [btc](symbol)?
+    - how much is [btc](symbol) worth?
+    - [btc](symbol) price
+    - what is the current price of [eth](symbol)?
+    - what is the price of [eth](symbol)?
+    - show me the current price of [eth](symbol)?
+    - how much is one [eth](symbol)?
+    - how much is [eth](symbol) worth?
+    - [eth](symbol) price
+    - what is the current price of [bnb](symbol)?
+    - what is the price of [bnb](symbol)?
+    - show me the current price of [bnb](symbol)?
+    - how much is one [bnb](symbol)?
+    - how much is [bnb](symbol) worth?
+    - [bnb](symbol) price
+    - what is the current price of [luna](symbol)?
+    - what is the price of [luna](symbol)?
+    - show me the current price of [luna](symbol)?
+    - how much is one [luna](symbol)?
+    - how much is [luna](symbol) worth?
+    - [luna](symbol) price
+    - what is the current price of [matic](symbol)?
+    - what is the price of [matic](symbol)?
+    - show me the current price of [matic](symbol)?
+    - how much is one [matic](symbol)?
+    - how much is [matic](symbol) worth?
+    - [matic](symbol) price
