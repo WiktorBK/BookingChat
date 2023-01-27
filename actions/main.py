@@ -1,32 +1,37 @@
-from binance.client import Client
-client = Client()
+from sqlalchemy import create_engine, select, Table, MetaData
 
-class Binance():
-    def get_symbols(self):
-        info = client.get_all_tickers()
-        symbols = [x for x in info]
-        return symbols        
-
-    def get_price(self, symbol):
-        symbol = symbol.upper()
-        for i in client.get_all_tickers():
-            if symbol == i['symbol']:
-                return i['price']
-        
-        variables = []
-        var = symbol + "USDT"
-        variables.append(var)
-        var = symbol + "BUSD"
-        variables.append(var)
-        var = symbol + "T"
-        variables.append(var)
-        var = symbol.replace('USD', 'BUSD')
-        variables.append(var)
-
-        for i in client.get_all_tickers():
-            for variable in variables:
-                if variable == i['symbol']:
-                    return i['price']
-        return False
+engine = create_engine("postgresql://postgres:postgres@localhost/restaurant")
+metadata = MetaData(bind=None)
 
 
+class Restaurant():
+    tables = Table(
+        'tables', 
+        metadata, 
+        autoload=True, 
+        autoload_with=engine
+
+    )
+    reservations = Table(
+        'reservations', 
+        metadata, 
+        autoload=True, 
+        autoload_with=engine
+
+    )
+    
+    def book_table(self, guests, date, phone_number):
+        pass
+    
+    def check_status(self, reservation_id):
+        pass
+    
+    def cancel_reservation(self, reservation_id, phone_number):
+        pass
+    
+    def change_reservation(self, reservation_id, phone_number, date, guests):
+        pass
+
+    def check_availability(self, date):
+        pass
+    
