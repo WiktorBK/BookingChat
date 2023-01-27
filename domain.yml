@@ -1,7 +1,12 @@
 version: "3.1"
 
 actions:
- - action_get_price
+ - action_book_table
+ - action_Check_availability
+ - action_check_status
+ - action_cancel_reservation
+ - action_change_reservation
+
 
 intents:
   - greet
@@ -11,12 +16,17 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
-  - check_price
- 
+  - book_table
+  - change_reservation
+  - cancel_reservation
+  - restart
+  - check_status
+  - check_availability
+  - need_help
+
 
 entities:
  - symbol
- - price
 
 
 slots:
@@ -29,7 +39,7 @@ slots:
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Hey! Welcome to our reservation system. How can I help you?"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -47,8 +57,7 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_check_price:
-  - text: "You are checking pirce of {symbol}"
+
 
 
 session_config:

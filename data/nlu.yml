@@ -91,35 +91,65 @@ nlu:
     - am I talking to a bot?
     - am I talking to a human?
  
-- intent: check_price
+- intent: book_table
   examples: |
-    - what is the current price of [btc](symbol)?
-    - what is the price of [btc](symbol)?
-    - show me the current price of [btc](symbol)?
-    - how much is one [btc](symbol)?
-    - how much is [btc](symbol) worth?
-    - [btc](symbol) price
-    - what is the current price of [eth](symbol)?
-    - what is the price of [eth](symbol)?
-    - show me the current price of [eth](symbol)?
-    - how much is one [eth](symbol)?
-    - how much is [eth](symbol) worth?
-    - [eth](symbol) price
-    - what is the current price of [bnb](symbol)?
-    - what is the price of [bnb](symbol)?
-    - show me the current price of [bnb](symbol)?
-    - how much is one [bnb](symbol)?
-    - how much is [bnb](symbol) worth?
-    - [bnb](symbol) price
-    - what is the current price of [luna](symbol)?
-    - what is the price of [luna](symbol)?
-    - show me the current price of [luna](symbol)?
-    - how much is one [luna](symbol)?
-    - how much is [luna](symbol) worth?
-    - [luna](symbol) price
-    - what is the current price of [matic](symbol)?
-    - what is the price of [matic](symbol)?
-    - show me the current price of [matic](symbol)?
-    - how much is one [matic](symbol)?
-    - how much is [matic](symbol) worth?
-    - [matic](symbol) price
+    - I would like to book a table
+    - I'd like to book a table
+    - I want to book a table
+    - I want to make reservation
+    - i would like to make reservation
+
+- intent: cancel_reservation
+  examples: |
+   - I want to cancel my reservation
+   - I would like to cancel my reservation
+   - I'd like to cancel my reservation
+   - I would like to call off my reservation
+   - cancel reservation
+
+- intent: update_reservation
+  examples: |
+   - I want to update my reservation 
+   - I want to change my reservation
+   - I want to change time of my reservation
+   - I would like to change my reservation
+   - I'd like to change my reservation
+   - I would like to update my reservation
+   - change reservation
+   - I want to update my reservation
+
+- intent: restart
+  examples: |
+   - start over
+   - start again
+   - restart conversation
+   - restart
+   - start the conversation again
+
+- intent: check_status
+  examples: |
+    - i would like to check status of my reservation
+    - can i see my reservation?
+    - show me my reservation
+    - reservation status
+    - booking status
+
+- intent: check_availability
+  examples: |
+    - i would like to see available tables for today
+    - show me available tables for tomorrow
+    - tables availability
+    - how many free tables do you have today?
+    - how many free tables do you have tomorrow?
+
+- intent: need_help
+  examples: |
+    - help me
+    - help
+    - i need help
+    - what can you do?
+    - what are you able to do?
+    - how can you help me?
+    - show commands
+    - what are you capable of?
+    
