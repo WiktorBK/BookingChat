@@ -8,7 +8,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.knowledge_base.storage import InMemoryKnowledgeBase
 from rasa_sdk.knowledge_base.actions import ActionQueryKnowledgeBase
 
-binance = Binance()
+
 
 class ActionGetPrice(Action):
 
@@ -23,9 +23,9 @@ class ActionGetPrice(Action):
             print(tracker.latest_message)
             if entity['entity'] == 'symbol':
                 symbol = entity['value']
-                price = binance.get_price(symbol)
+                
 
-                dispatcher.utter_message(text=f"Current price of {symbol} is {price}")
+                
             else:
                     dispatcher.utter_message(
                         text=f"I do not recognize {symbol}, are you sure it is correctly spelled?")
