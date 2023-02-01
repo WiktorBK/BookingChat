@@ -118,6 +118,7 @@ nlu:
    - change reservation
    - I want to update my reservation
 
+
 - intent: restart
   examples: |
    - start over
@@ -133,7 +134,7 @@ nlu:
     - show me my reservation
     - reservation status
     - booking status
-
+    
 - intent: check_availability
   examples: |
     - i would like to see available tables for today
