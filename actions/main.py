@@ -15,49 +15,70 @@ class RestaurantModel():
     def book_table(self, guests, date, phone_number, time):
         best_table = self.choose_best_tables(date, time, guests)
 
-        same_hour = False
+        
         if len(best_table) == 0: return {"message": f"no available tables for {date}"}
-        if len(best_table) == 1 and best_table[0][1] == time: same_hour = True
         if len(best_table) > 1 or len(best_table) == 1 and best_table[0][1] != time:
             available_hours = [table[1] for table in best_table]
-            print(available_hours)
-            return {"message": f"This hour is not available.\nAvailable hours for {date}: "}
+            return {"message": f"This hour is not available.\nBest option for you at {date}: {available_hours}"}
 
+        if len(best_table) == 1 and best_table[0][1] == time: 
+                query = select(self.availability.c.hours).where(
+                    and_(self.availability.c.day == date, self.availability.c.table_id == best_table[0][0]))
 
-        # try:
-        #     query = select(self.availability.c.hours).where(and_(self.availability.c.day == date, self.availability.c.table_id == best_table[0][0]))
-        #     hours = engine.execute(query).fetchall()
-        # except:
-        #     return 'no available tables for this date'
-        
-        # new_list = hours[0][0]
-        # try:
-        #     new_list.remove(time)
-            
-        #     if len(new_list) == 0:
-        #         new_list = ['']
+                hours = engine.execute(query).fetchall()
+                new_list = hours[0][0]
+                new_list.remove(time)
+                new_date = datetime.datetime.strptime(date, '%d.%m.%y').strftime('%y-%m-%d')
+                if len(new_list) == 0:  
+                    engine.execute(f"UPDATE availability SET hours = ARRAY {['']} WHERE availability.day = '20{new_date}' AND availability.table_id = {best_table[0][0]}")
+                else:
+                    engine.execute(f"UPDATE availability SET hours = ARRAY {new_list} WHERE availability.day = '20{new_date}' AND availability.table_id = {best_table[0][0]}")
 
-        #     new_date = datetime.datetime.strptime(date, '%d.%m.%y').strftime('%y-%m-%d')
-            
-        #     engine.execute(f"UPDATE availability SET hours = ARRAY {new_list} WHERE availability.day = '20{new_date}' AND availability.table_id = {best_table[0][0]}")
-
-        #     with engine.connect() as conn:
-        #         conn.execute(
-        #         insert(self.reservations),
-        #         {"table_id": best_table[0][0], "guests": guests, "start": date, "phone_number": phone_number, "time": time},
-        #     )
-        #     return f'successfully booked table at {date} {time} for {guests} guests'
-        # except:
-        #     return 'could not complete reservation'
+                with engine.connect() as conn:
+                    conn.execute(
+                    insert(self.reservations),
+                    {"table_id": best_table[0][0], "guests": guests, "start": date, "phone_number": phone_number, "time": time},
+                )
+                reservation_number = engine.execute(select(self.reservations.c.reservation_id).where(
+                    and_(self.reservations.c.table_id == best_table[0][0], self.reservations.c.guests == guests, self.reservations.c.start == date, self.reservations.c.phone_number  == phone_number, self.reservations.c.time == time, self.reservations.c.status == 'active')
+                )).fetchall()
+                
+                return f'successfully booked table at {date} {time} for {guests} guests. Reservation number: {reservation_number[0][0]} '
 
     def check_status(self, reservation_id):
         query = select(self.reservations.c.status).where(self.reservations.c.reservation_id == reservation_id)
         results = engine.execute(query).fetchall()
-        return results
+        if len(results) == 0: return {"message": "Wrong reservation number"}
+
+        return results[0][0]
 
     def cancel_reservation(self, reservation_id, phone_number):
-        pass
-    
+        
+        reservation = engine.execute(select(self.reservations).where(and_(self.reservations.c.reservation_id == reservation_id, 
+        self.reservations.c.phone_number == phone_number,  
+        self.reservations.c.status == 'active'))
+        ).fetchall()
+        
+        if len(reservation) == 0: return {"message": "couldn't find your reservation"}
+        engine.execute(f"UPDATE reservations SET status = 'cancelled' WHERE reservations.reservation_id = {reservation_id}")
+
+        reservation_time = reservation[0][6]
+        reservation_date = reservation[0][3]
+        reservation_table = reservation[0][1]
+
+        availability = engine.execute(select(self.availability).where(and_(self.availability.c.day == reservation_date, 
+        self.availability.c.table_id == reservation_table))
+        ).fetchall()
+
+        available_hours = availability[0][2]
+        
+        if available_hours[0] == '': available_hours.remove('')
+        if reservation_time not in available_hours: available_hours.append(reservation_time)
+
+        engine.execute(f"UPDATE availability SET hours = ARRAY {available_hours} WHERE availability.day = '{reservation_date}' AND availability.table_id = {reservation_table}")
+
+        return f"Successfully cancelled reservation"
+
     def change_reservation(self, reservation_id, phone_number, date, guests):
         pass
 
@@ -140,9 +161,11 @@ class RestaurantModel():
 
 
 r = RestaurantModel()
-# print(r.check_availability('02.02.23', 4))
+# print(r.check_availability('02.02.23', 2))
 # r.add_availability('2023-02-02')
-# print(r.check_status(1))
+# print(r.check_status(54))
 # print(r.choose_best_tables('02.02.23', "18:42", 2)) 
-print(r.book_table(5, "02.02.23", "530925823", "19:00"))
+# print(r.book_table(2, "02.02.23", "530925823", "20:00"))
+print(r.cancel_reservation(45, "530925823"))
+
 
