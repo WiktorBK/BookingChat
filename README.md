@@ -1,6 +1,16 @@
 # BookingChat
 
-Simple ChatBot allowing user to book table in the restaurant.
-Customer provides number of guests and date. Based on that and on current availability, program chooses best option.
-User can check status, update or delete his reservation.
 
+Simple ChatBot allowing user to book a table in the restaurant.
+
+
+## Features:
+- Booking table
+- Checking availability
+- Cancelling the reservation
+- Checking status of the reservation
+- Updating the reservation
+
+
+
+Made with **python** and **rasa**
