@@ -46,6 +46,7 @@ class RestaurantModel():
                 return f'successfully booked table at {date} {time} for {guests} guests. Reservation number: {reservation_number[0][0]} '
 
     def check_status(self, reservation_id):
+
         query = select(self.reservations.c.status).where(self.reservations.c.reservation_id == reservation_id)
         results = engine.execute(query).fetchall()
         if len(results) == 0: return {"message": "Wrong reservation number"}
@@ -53,7 +54,7 @@ class RestaurantModel():
         return results[0][0]
 
     def cancel_reservation(self, reservation_id, phone_number):
-        
+
         reservation = engine.execute(select(self.reservations).where(and_(self.reservations.c.reservation_id == reservation_id, 
         self.reservations.c.phone_number == phone_number,  
         self.reservations.c.status == 'active'))
@@ -79,8 +80,44 @@ class RestaurantModel():
 
         return f"Successfully cancelled reservation"
 
-    def change_reservation(self, reservation_id, phone_number, date, guests):
-        pass
+    def change_reservation(self, reservation_id, phone_number, new_date, new_time, new_guests):
+
+        reservation = engine.execute(select(self.reservations).where(and_(self.reservations.c.reservation_id == reservation_id, 
+        self.reservations.c.phone_number == phone_number,  
+        self.reservations.c.status == 'active'))
+        ).fetchall()
+
+        if len(reservation) == 0: return {"message": "couldn't find your reservation"}
+        
+        best_table = self.choose_best_tables(new_date, new_time, new_guests)
+        
+        if len(best_table) == 0: return {"message": f"no available tables for {new_date}"}
+        if len(best_table) > 1 or len(best_table) == 1 and best_table[0][1] != new_time:
+            available_hours = [table[1] for table in best_table]
+            return {"message": f"This hour is not available.\nBest option on the selected day: {available_hours}"}
+
+        if len(best_table) == 1 and best_table[0][1] == new_time: 
+                hours_old = engine.execute(select(self.availability.c.hours).where(
+                    and_(self.availability.c.day == reservation[0][3], self.availability.c.table_id == reservation[0][1]))).fetchall()[0][0]
+                hours_new =  engine.execute(select(self.availability.c.hours).where(
+                    and_(self.availability.c.day == new_date, self.availability.c.table_id == best_table[0][0]))).fetchall()[0][0]
+
+                new_old_hours = hours_old[:]
+                new_old_hours.append(reservation[0][6])
+                new_hours_new = hours_new[:]
+                new_hours_new.remove(new_time)
+                
+                new_date = datetime.datetime.strptime(new_date, '%d.%m.%y').strftime('%y-%m-%d')
+                
+                engine.execute(f"UPDATE availability SET hours = ARRAY {new_old_hours} WHERE availability.day = '{reservation[0][3]}' AND availability.table_id = {reservation[0][1]}")
+                if len(new_hours_new) == 0:
+                    engine.execute(f"UPDATE availability SET hours = ARRAY {['']} WHERE availability.day = '20{new_date}' AND availability.table_id = {best_table[0][0]}")
+                else:
+                    engine.execute(f"UPDATE availability SET hours = ARRAY {new_hours_new}  WHERE availability.day = '20{new_date}' AND availability.table_id = {best_table[0][0]}")
+
+                engine.execute(f"UPDATE reservations SET table_id = {best_table[0][0]}, guests = {new_guests}, start = '20{new_date}', time = '{new_time}' WHERE reservations.reservation_id = {reservation_id}")
+
+                return {"message": "Succesfully changed reservation"}
 
     def check_availability(self, date, guests, details = False):
         available_hours = []
@@ -162,10 +199,10 @@ class RestaurantModel():
 
 r = RestaurantModel()
 # print(r.check_availability('02.02.23', 2))
-# r.add_availability('2023-02-02')
+# r.add_availability('2023-03-02')
 # print(r.check_status(54))
 # print(r.choose_best_tables('02.02.23', "18:42", 2)) 
 # print(r.book_table(2, "02.02.23", "530925823", "20:00"))
-print(r.cancel_reservation(45, "530925823"))
-
+# print(r.cancel_reservation(45, "530925823"))
+# print(r.change_reservation(44, "530925823", "02.03.23", "22:00", 5))
 
