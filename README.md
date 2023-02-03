@@ -4,7 +4,7 @@
 Simple ChatBot allowing user to book a table in the restaurant.
 
 
-## Features:
+## Features
 - Booking table
 - Checking availability
 - Cancelling the reservation
