@@ -24,9 +24,33 @@ class ActionGetPrice(Action):
             if entity['entity'] == 'symbol':
                 symbol = entity['value']
                 
-
-                
             else:
                     dispatcher.utter_message(
                         text=f"I do not recognize {symbol}, are you sure it is correctly spelled?")
         return []
+
+
+class ActionBookTable(Action):
+    def name(self) -> Text:
+      return "action_book_table"
+
+
+class ActionCancelReservation(Action):
+    def name(self) -> Text:
+      return "action_cancel_reservation"
+
+
+class ActionChangeReservation(Action):
+    def name(self) -> Text:
+      return "action_change_reservation"
+
+
+class ActionCheckStatus(Action):
+    def name(self) -> Text:
+      return "action_check_status"
+
+
+class ActionCheckAvailability(Action):
+    def name(self) -> Text:
+      return "action_check_availability"
+

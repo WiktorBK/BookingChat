@@ -12,4 +12,9 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: restart a conversation after restart intent
+  steps:
+  - intent: restart
+  - action: utter_greet
+
 

@@ -28,3 +28,9 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: default book path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_table

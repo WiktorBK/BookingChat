@@ -106,6 +106,7 @@ nlu:
    - I'd like to cancel my reservation
    - I would like to call off my reservation
    - cancel reservation
+   - delete my reservation
 
 - intent: update_reservation
   examples: |
