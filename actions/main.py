@@ -14,8 +14,14 @@ class RestaurantModel():
 
     def book_table(self, guests, date, phone_number, time):
         best_table = self.choose_best_tables(date, time, guests)
-
         
+        t = date
+        t = t.split('.')
+        t[2] = "20" + t[2] 
+        today = datetime.datetime.now().date()
+        t = datetime.datetime(int(t[2]), int(t[1]), int(t[0])).date()
+
+        if today > t: return{"message": "date cannot be in the past"}
         if len(best_table) == 0: return {"message": f"no available tables for {date}"}
         if len(best_table) > 1 or len(best_table) == 1 and best_table[0][1] != time:
             available_hours = [table[1] for table in best_table]
@@ -197,12 +203,12 @@ class RestaurantModel():
             return []
 
 
-r = RestaurantModel()
-# print(r.check_availability('02.02.23', 2))
-# r.add_availability('2023-03-02')
-# print(r.check_status(54))
-# print(r.choose_best_tables('02.02.23', "18:42", 2)) 
-# print(r.book_table(2, "02.02.23", "530925823", "20:00"))
-# print(r.cancel_reservation(45, "530925823"))
-# print(r.change_reservation(44, "530925823", "02.03.23", "22:00", 5))
+# r = RestaurantModel()
+# print(r.check_availability('03.02.23', 2))
+# r.add_availability('2023-02-08')
+# print(r.check_status(49))
+# print(r.book_table(2, "03.02.23", "530925823", "20:00"))
+# print(r.cancel_reservation(49, "530925823"))
+# print(r.change_reservation(50, "530925823", "03.02.23", "22:00", 2))
+
 

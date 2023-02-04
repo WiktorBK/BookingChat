@@ -6,7 +6,7 @@ actions:
  - action_check_status
  - action_cancel_reservation
  - action_change_reservation
-
+ - validate_booking_form
 
 intents:
   - greet
@@ -26,36 +26,63 @@ intents:
 
 
 entities:
- - symbol
-
-
+- date
+- guests
+- hour
 slots:
- symbol:
+  date:
     type: text
+    influence_conversation: true
     mappings:
     - type: from_entity
-      entity: symbol
+      entity: date
+  guests:
+    type: int
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: guests
+  hour:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: hour
+forms:
+  booking_form:
+    required_slots:
+      - date
+      - hour
+      - guests
+
 
 
 responses:
   utter_greet:
   - text: "Hey! Welcome to our booking system. How can I help you?"
-
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
-
   utter_did_that_help:
   - text: "Did that help you?"
-
   utter_happy:
   - text: "Great, carry on!"
-
   utter_goodbye:
   - text: "Bye"
-
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+  utter_submit:
+  - text: I will now book a table!
+  utter_pizza_slots:
+  - text: I'm booking a table for {guests} guests on {date} at {hour}.
+  utter_ask_continue:
+  - text: Are you sure you want to stop the form?
+  utter_ask_guest_amount:
+  - text: How many guests?
+  utter_ask_date:
+  - text: Which day?
+  utter_ask_hour:
+  - text: What hour?
 
 
 
