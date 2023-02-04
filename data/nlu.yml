@@ -30,6 +30,16 @@ nlu:
     - bye bye
     - see you later
 
+- intent: stop
+  examples: |
+    - stop
+    - quit
+    - nevermind
+    - I've changed my mind, stop the booking
+    - I don't want to book anymore
+
+
+
 - intent: affirm
   examples: |
     - yes

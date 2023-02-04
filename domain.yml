@@ -8,6 +8,7 @@ actions:
  - action_change_reservation
  - validate_booking_form
 
+
 intents:
   - greet
   - goodbye
@@ -19,11 +20,11 @@ intents:
   - book_table
   - change_reservation
   - cancel_reservation
-  - restart
+  - restart 
   - check_status
   - check_availability
   - need_help
-
+  - stop
 
 entities:
 - date
@@ -37,7 +38,7 @@ slots:
     - type: from_entity
       entity: date
   guests:
-    type: int
+    type: text
     influence_conversation: true
     mappings:
     - type: from_entity
@@ -73,16 +74,17 @@ responses:
   - text: "I am a bot, powered by Rasa."
   utter_submit:
   - text: I will now book a table!
-  utter_pizza_slots:
+  utter_booking_slots:
   - text: I'm booking a table for {guests} guests on {date} at {hour}.
   utter_ask_continue:
-  - text: Are you sure you want to stop the form?
+  - text: Are you sure you don't want to continue?
   utter_ask_guest_amount:
   - text: How many guests?
   utter_ask_date:
-  - text: Which day?
+  - text: Which day (YYYY-MM-DD)?
   utter_ask_hour:
   - text: What hour?
+  
 
 
 

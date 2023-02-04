@@ -12,6 +12,22 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-# 
+- rule: Activate booking form
+  steps: 
+  - intent: book_table
+  - action: booking_form
+  - active_loop: booking_form
+
+- rule: Submit booking Form
+  condition:
+  - active_loop: booking_form
+  steps:
+  - action: booking_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit
+  - action: utter_booking_slots
+
 
 
