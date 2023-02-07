@@ -12,5 +12,5 @@ Simple ChatBot allowing user to book a table in the restaurant.
 - Updating the reservation
 
 
-
+(IN PROGRESS)
 Made with **python** and **rasa**
